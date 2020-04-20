@@ -94,7 +94,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 1825868293331862086}
   _rangeTrigger: {fileID: 608919147176829428}
-  _gravityInfluence: 0
+  _meshFilter: {fileID: 5379582697870194499}
+  _heartMesh: {fileID: -1579241630799410176, guid: e90e1099611dbc94b8393f0dc2fa3932,
+    type: 3}
   _noiseAmplitude: 0.0033
   _noiseScale: 0.1
   _repelForce: 0.001
@@ -108,7 +110,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2139236666456559664}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 289301614986012343, guid: 7a13130fac86c3d40b432f8a5b038103, type: 3}
 --- !u!23 &4622985775228212927
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -9,6 +9,9 @@ public class SoapBubble : MonoBehaviour
 	[SerializeField] private Rigidbody _rigidbody;
 	[SerializeField] private SphereCollider _rangeTrigger;
 
+	[SerializeField] private MeshFilter _meshFilter;
+	[SerializeField] private Mesh _heartMesh;
+
 	[Range(0f, 0.1f)]
 	[SerializeField] private float _noiseAmplitude = 0.1f;
 	[Range(0f, 50f)]
@@ -38,6 +41,8 @@ public class SoapBubble : MonoBehaviour
 	private void Start()
 	{
 		_rigidbody.isKinematic = true;
+		_rigidbody.rotation = Random.rotation;
+		if (Random.value < 0.08f) _meshFilter.sharedMesh = _heartMesh;
 	}
 
 	private void FixedUpdate()
@@ -79,14 +84,14 @@ public class SoapBubble : MonoBehaviour
 		transform.localScale = new Vector3(s, s, s);
 	}
 
-	public void Release(Vector3 forward = default)
+	public void Release(Vector3 forward = default, Transform origin = null)
 	{
-		transform.SetParent(null, true);
+		transform.SetParent(origin, true);
 
 		_rigidbody.isKinematic = false;
 		_rigidbody.WakeUp();
 		_rigidbody.AddForce(forward, ForceMode.VelocityChange);
-
+		_rigidbody.AddTorque(Random.onUnitSphere * 100f, ForceMode.Acceleration);
 		StartCoroutine(StartPopRoutine());
 	}
 
