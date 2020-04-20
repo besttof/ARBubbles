@@ -97,6 +97,8 @@ MonoBehaviour:
   _meshFilter: {fileID: 5379582697870194499}
   _heartMesh: {fileID: -1579241630799410176, guid: e90e1099611dbc94b8393f0dc2fa3932,
     type: 3}
+  _popEffectPrefab: {fileID: 2139236666456559664, guid: 3353455a4077c164e973aaf71eb0f0d5,
+    type: 3}
   _noiseAmplitude: 0.0033
   _noiseScale: 0.1
   _repelForce: 0.001

@@ -152,7 +152,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioSource: {fileID: 370724393}
-  _smoothing: 0.5
   _samplesSize: 128
   _peakText: {fileID: 614744025}
   _maxText: {fileID: 621366857}
@@ -620,7 +619,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &614744024
 RectTransform:
   m_ObjectHideFlags: 0
@@ -776,7 +775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &621366856
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1449,7 +1448,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2077561424
 RectTransform:
   m_ObjectHideFlags: 0

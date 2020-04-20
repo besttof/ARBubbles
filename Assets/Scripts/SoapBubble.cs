@@ -12,6 +12,8 @@ public class SoapBubble : MonoBehaviour
 	[SerializeField] private MeshFilter _meshFilter;
 	[SerializeField] private Mesh _heartMesh;
 
+	[SerializeField] private GameObject _popEffectPrefab;
+
 	[Range(0f, 0.1f)]
 	[SerializeField] private float _noiseAmplitude = 0.1f;
 	[Range(0f, 50f)]
@@ -116,6 +118,7 @@ public class SoapBubble : MonoBehaviour
 
 	private void Pop()
 	{
+		Instantiate(_popEffectPrefab, transform.position, transform.rotation, transform.parent);
 		Destroy(gameObject);
 	}
 
