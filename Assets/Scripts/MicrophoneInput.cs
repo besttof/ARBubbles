@@ -45,7 +45,7 @@ public sealed class MicrophoneInput : MonoBehaviour
 		for (var i = 0; i < _sampleValues.Length - 1; i++)
 		{
 			//Value = Mathf.Max(Value, _sampleValues[i]);
-			Value += _sampleValues[i];
+			Value += _sampleValues[i] * _sampleValues[i];
 		}
 
 		Value /= _sampleValues.Length;

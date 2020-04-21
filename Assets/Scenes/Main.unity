@@ -170,10 +170,10 @@ MonoBehaviour:
   _microphone: {fileID: 37736095}
   _bubble: {fileID: 6169192659417860264, guid: e20df55b0a2fb9841acd639ef7df2b83, type: 3}
   _bubbleSpawnHolder: {fileID: 128941492}
-  _spawnThreshold: 0.1
+  _spawnThreshold: 0.08
   _releaseForce: 0.1
   _releaseDir: {x: 0, y: 1, z: 0.3}
-  _growSpeed: 0.002
+  _growSpeed: 0.004
   _maxSize: 0.3
   _maxTime: 2
   _intervalTime: 0.2
