@@ -51,7 +51,7 @@ public class SoapBubbleSpawner : MonoBehaviour
 				var startTime = Time.realtimeSinceStartup;
 
 				while (_microphone.Value > _spawnThreshold && size < _maxSize &&
-				       Time.realtimeSinceStartup - (Input.anyKey ? _maxTime / 2f : _maxTime) < startTime)
+				       Time.realtimeSinceStartup - _maxTime < startTime)
 				{
 					size += _microphone.Value * _growSpeed;
 
