@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Android;
 
@@ -9,14 +9,12 @@ public sealed class MicrophoneInput : MonoBehaviour
 	[SerializeField] private AudioSource _audioSource;
 	[SerializeField] private int _samplesSize = 128;
 
-	[SerializeField] private TMP_Text _peakText;
-	[SerializeField] private TMP_Text _maxText;
-	[SerializeField] private TMP_Text _positionText;
-
-	public float Value { get; private set; }
+  	public float Value { get; private set; }
 	public string Device { get; private set; }
 	public float Peak { get; private set; }
 
+	public bool IsListening => _audioSource.clip != null;
+	
 	private float[] _sampleValues;
 
 	private void Awake()
@@ -26,6 +24,7 @@ public sealed class MicrophoneInput : MonoBehaviour
 
 	private IEnumerator Start()
 	{
+		// TODO start and stop
 		// TODO proper permissions
 		Application.HasUserAuthorization(UserAuthorization.Microphone);
 		yield return Application.RequestUserAuthorization(UserAuthorization.Microphone);
@@ -40,7 +39,7 @@ public sealed class MicrophoneInput : MonoBehaviour
 
 	private IEnumerator StartMicRoutine()
 	{
-		 Device = Microphone.devices.FirstOrDefault();
+		Device = Microphone.devices.FirstOrDefault();
 
 		_audioSource.clip = Microphone.Start(Device, true, 1, AudioSettings.outputSampleRate);
 		_audioSource.loop = true;
@@ -72,16 +71,25 @@ public sealed class MicrophoneInput : MonoBehaviour
 
 		for (var i = 0; i < _sampleValues.Length - 1; i++)
 		{
-			Value = Mathf.Max(Value, _sampleValues[i]);
+			//Value = Mathf.Max(Value, _sampleValues[i]);
+			Value += _sampleValues[i];
 		}
+
+		Value /= _sampleValues.Length;
 
 #if UNITY_EDITOR
 		Value = Input.GetKey(KeyCode.B) ? 0.5f : Value;
 #endif
 		Peak = Mathf.Max(Peak, Value);
+	}
 
-		if (_peakText != null) _peakText.text = $"Peak: {Peak:0.000}";
-		if (_positionText != null) _positionText.text = $"Position: {Microphone.GetPosition(Device)}";
-		if (_maxText != null) _maxText.text = $"Peak: {Value:0.000}";
+	private void OnApplicationPause(bool isPaused)
+	{
+		if (isPaused)
+			StopMic();
+		else
+		{
+			StartCoroutine(StartMicRoutine());
+		}
 	}
 }
