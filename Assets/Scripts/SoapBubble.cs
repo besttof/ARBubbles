@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -24,7 +25,11 @@ public class SoapBubble : MonoBehaviour
 	[SerializeField] private ForceMode _attractForceMode;
 	[SerializeField] private ForceMode _repelForceMode;
 
+	[SerializeField] private float _mergeDistanceThreshold = 0.1f;
+
 	public float Radius => transform.localScale.x;
+
+	public bool IsFree => _rigidbody.isKinematic == false;
 
 	private readonly HashSet<SoapBubble> _bubbles = new HashSet<SoapBubble>();
 	private Vector3 _noiseOffset;
@@ -108,6 +113,24 @@ public class SoapBubble : MonoBehaviour
 		if (distance < totalRadius)
 		{
 			_rigidbody.AddForce(delta.normalized * _repelForce / distance, _repelForceMode);
+
+			if (other.IsFree && distance < _mergeDistanceThreshold)
+			{
+				Debug.DrawLine(transform.position, other.transform.position, Color.blue);
+				Debug.DrawRay(transform.position, delta.normalized * distance, Color.white);
+				Debug.DrawRay(transform.position, delta.normalized * Radius, Color.red);
+
+				Debug.Log($"{distance} {_mergeDistanceThreshold}");
+
+				DOTween.Kill(this);
+				transform.DOScale(Radius + other.Radius, 0.1f)
+				         .SetSpeedBased()
+				         .SetEase(Ease.OutElastic)
+				         .SetId(this);
+
+				//Radius += other.Radius;
+				other.Pop();
+			}
 		}
 		else
 		{

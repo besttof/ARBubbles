@@ -31,11 +31,15 @@ public class SoapBubbleSpawner : MonoBehaviour
 	{
 		_spawnRoutine = StartCoroutine(SpawnRoutine());
 		_origin.MakeContentAppearAt(_arRoot, Vector3.zero);
+
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 	}
 
 	private void OnDisable()
 	{
 		if (_spawnRoutine != null) StopCoroutine(_spawnRoutine);
+
+		Screen.sleepTimeout = SleepTimeout.SystemSetting;
 	}
 
 	private IEnumerator SpawnRoutine()
@@ -50,7 +54,8 @@ public class SoapBubbleSpawner : MonoBehaviour
 				var size = 0.01f;
 				var startTime = Time.realtimeSinceStartup;
 
-				while (_microphone.Value > _spawnThreshold && size < _maxSize &&
+				while (_microphone.Value > _spawnThreshold &&
+				       size < _maxSize &&
 				       Time.realtimeSinceStartup - _maxTime < startTime)
 				{
 					size += _microphone.Value * _growSpeed;

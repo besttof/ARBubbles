@@ -105,6 +105,7 @@ MonoBehaviour:
   _attractForce: 0.002
   _attractForceMode: 0
   _repelForceMode: 0
+  _mergeDistanceThreshold: 0.01
 --- !u!33 &5379582697870194499
 MeshFilter:
   m_ObjectHideFlags: 0
