@@ -35,7 +35,7 @@ public sealed class MicrophoneInput : MonoBehaviour
 			Permission.RequestUserPermission(Permission.Microphone);
 		}
 
-		yield return StartCoroutine(StartMicRoutine());
+		yield return StartMicRoutine();
 	}
 
 	private IEnumerator StartMicRoutine()
