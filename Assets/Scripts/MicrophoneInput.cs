@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Android;
 
 public sealed class MicrophoneInput : MonoBehaviour
 {
 	[SerializeField] private AudioSource _audioSource;
 	[SerializeField] private int _samplesSize = 128;
 
-  	public float Value { get; private set; }
+	public float Value { get; private set; }
 	public string Device { get; private set; }
 	public float Peak { get; private set; }
 
-	public bool IsListening => _audioSource.clip != null;
-	
+	public bool IsListening => _audioSource.isPlaying;
+
 	private float[] _sampleValues;
 
 	private void Awake()
@@ -22,39 +20,14 @@ public sealed class MicrophoneInput : MonoBehaviour
 		_sampleValues = new float[_samplesSize];
 	}
 
-	private IEnumerator Start()
+	private void OnEnable()
 	{
-		// TODO start and stop
-		// TODO proper permissions
-		Application.HasUserAuthorization(UserAuthorization.Microphone);
-		yield return Application.RequestUserAuthorization(UserAuthorization.Microphone);
-
-		if (Permission.HasUserAuthorizedPermission(Permission.Microphone))
-		{
-			Permission.RequestUserPermission(Permission.Microphone);
-		}
-
-		yield return StartMicRoutine();
+		StartMic();
 	}
 
-	private IEnumerator StartMicRoutine()
+	private void OnDisable()
 	{
-		Device = Microphone.devices.FirstOrDefault();
-
-		_audioSource.clip = Microphone.Start(Device, true, 1, AudioSettings.outputSampleRate);
-		_audioSource.loop = true;
-
-		yield return new WaitUntil(() => Microphone.GetPosition(Device) > 0);
-
-		Debug.Log($"Started recording: {Device} {AudioSettings.outputSampleRate}");
-		_audioSource.Play();
-	}
-
-	private void StopMic()
-	{
-		Value = 0f;
-		Microphone.End(Device);
-		_audioSource.clip = null;
+		StopMic();
 	}
 
 	private void Update()
@@ -86,10 +59,38 @@ public sealed class MicrophoneInput : MonoBehaviour
 	private void OnApplicationPause(bool isPaused)
 	{
 		if (isPaused)
+		{
 			StopMic();
+		}
 		else
 		{
-			StartCoroutine(StartMicRoutine());
+			StartMic();
 		}
+	}
+
+	public void StartMic()
+	{
+		StartCoroutine(StartMicRoutine());
+	}
+
+	public void StopMic()
+	{
+		Value = 0f;
+		Microphone.End(Device);
+		_audioSource.Stop();
+	}
+
+	private IEnumerator StartMicRoutine()
+	{
+		Device = Microphone.devices.FirstOrDefault();
+
+		_audioSource.clip = Microphone.Start(Device, true, 1, AudioSettings.outputSampleRate);
+		_audioSource.loop = true;
+
+		yield return new WaitUntil(() => Microphone.GetPosition(Device) > 0);
+
+		Debug.Log($"Started recording: {Device} {AudioSettings.outputSampleRate}");
+
+		_audioSource.Play();
 	}
 }
