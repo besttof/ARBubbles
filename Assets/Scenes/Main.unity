@@ -169,10 +169,10 @@ MonoBehaviour:
   _arRoot: {fileID: 37736097}
   _microphone: {fileID: 37736095}
   _bubbles:
-  - _weight: 20
+  - _weight: 50
     _prefab: {fileID: 6169192659417860264, guid: e20df55b0a2fb9841acd639ef7df2b83,
       type: 3}
-  - _weight: 1
+  - _weight: 3
     _prefab: {fileID: 6637601092535789242, guid: 1c70e0a8b4bd3da4fbd8cbb8c9713132,
       type: 3}
   - _weight: 2
