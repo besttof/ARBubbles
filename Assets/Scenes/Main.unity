@@ -176,7 +176,7 @@ MonoBehaviour:
     _prefab: {fileID: 6637601092535789242, guid: 1c70e0a8b4bd3da4fbd8cbb8c9713132,
       type: 3}
   - _weight: 2
-    _prefab: {fileID: 1796212477548115379, guid: 3e4287a5b0d59814980a1579ba74ebe3,
+    _prefab: {fileID: 5579975000744377693, guid: 3e4287a5b0d59814980a1579ba74ebe3,
       type: 3}
   _bubbleSpawnHolder: {fileID: 128941492}
   _spawnThreshold: 0.08
