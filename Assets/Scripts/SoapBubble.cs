@@ -11,7 +11,6 @@ public class SoapBubble : MonoBehaviour
 	[SerializeField] private SphereCollider _rangeTrigger;
 
 	[SerializeField] private MeshFilter _meshFilter;
-	[SerializeField] private Mesh _heartMesh;
 
 	[SerializeField] private GameObject _popEffectPrefab;
 
@@ -49,7 +48,6 @@ public class SoapBubble : MonoBehaviour
 	{
 		_rigidbody.isKinematic = true;
 		_rigidbody.rotation = Random.rotation;
-		if (Random.value < 0.08f) _meshFilter.sharedMesh = _heartMesh;
 	}
 
 	private void FixedUpdate()
@@ -120,8 +118,6 @@ public class SoapBubble : MonoBehaviour
 				Debug.DrawRay(transform.position, delta.normalized * distance, Color.white);
 				Debug.DrawRay(transform.position, delta.normalized * Radius, Color.red);
 
-				Debug.Log($"{distance} {_mergeDistanceThreshold}");
-
 				DOTween.Kill(this);
 				transform.DOScale(Radius + other.Radius, 0.1f)
 				         .SetSpeedBased()
@@ -141,7 +137,9 @@ public class SoapBubble : MonoBehaviour
 
 	private void Pop()
 	{
-		Instantiate(_popEffectPrefab, transform.position, transform.rotation, transform.parent);
+		var t = transform;
+		var popEffect = Instantiate(_popEffectPrefab, t.position, t.rotation, t.parent);
+		popEffect.transform.localScale = t.localScale;
 		Destroy(gameObject);
 	}
 
