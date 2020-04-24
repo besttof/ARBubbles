@@ -56,7 +56,9 @@ public sealed class UIOverlayManager : MonoBehaviour
 	private IEnumerator WaitMicReadyState()
 	{
 		// _Very_ rudimentary permission checking.
+		_waitingOverlay.SetActive(true);
 		_status.text = $"Waiting microphone permission.";
+
 #if UNITY_ANDROID
 		while (Permission.HasUserAuthorizedPermission(Permission.Microphone) == false)
 		{
@@ -85,6 +87,7 @@ public sealed class UIOverlayManager : MonoBehaviour
 		}
 
 		_status.text = "";
+		_waitingOverlay.SetActive(false);
 	}
 
 	private IEnumerator ActiveMicState()
