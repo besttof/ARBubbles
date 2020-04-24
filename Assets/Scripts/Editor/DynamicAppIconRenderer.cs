@@ -62,7 +62,7 @@ public sealed class DynamicAppIconRenderer : ScriptableObject
 
 	private void RenderIcon(PreviewRenderUtility previewRenderer, Target target)
 	{
-		const int w = 1204;
+		const int w = 1024;
 		const int h = 1024;
 		var rect = new Rect(0f, 0f, w, h);
 
