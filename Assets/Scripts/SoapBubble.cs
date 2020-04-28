@@ -10,14 +10,7 @@ public class SoapBubble : MonoBehaviour
 	[SerializeField] private Rigidbody _rigidbody;
 	[SerializeField] private SphereCollider _rangeTrigger;
 
-	[SerializeField] private MeshFilter _meshFilter;
-
 	[SerializeField] private GameObject _popEffectPrefab;
-
-	[Range(0f, 0.1f)]
-	[SerializeField] private float _noiseAmplitude = 0.1f;
-	[Range(0f, 50f)]
-	[SerializeField] private float _noiseScale = 0.1f;
 
 	[SerializeField] private float _repelForce = 0.1f;
 	[SerializeField] private float _attractForce = 0.1f;
@@ -27,16 +20,13 @@ public class SoapBubble : MonoBehaviour
 	[SerializeField] private float _mergeDistanceThreshold = 0.1f;
 
 	public float Radius => transform.localScale.x;
-
 	public bool IsFree => _rigidbody.isKinematic == false;
 
 	private readonly HashSet<SoapBubble> _bubbles = new HashSet<SoapBubble>();
-	private Vector3 _noiseOffset;
 
 	private void Reset()
 	{
 		_rigidbody = GetComponentInChildren<Rigidbody>();
-		_noiseOffset = Random.insideUnitSphere;
 	}
 
 	private void OnValidate()
@@ -54,6 +44,7 @@ public class SoapBubble : MonoBehaviour
 	{
 		_rigidbody.AddForce(-Physics.gravity);
 
+		// because destruction doesn't trigger physics events, clean up manually
 		_bubbles.RemoveWhere(b => b == null);
 		foreach (var bubble in _bubbles)
 		{
@@ -97,6 +88,7 @@ public class SoapBubble : MonoBehaviour
 		_rigidbody.WakeUp();
 		_rigidbody.AddForce(forward, ForceMode.VelocityChange);
 		_rigidbody.AddTorque(Random.onUnitSphere * 100f, ForceMode.Acceleration);
+
 		StartCoroutine(StartPopRoutine());
 	}
 
@@ -112,21 +104,7 @@ public class SoapBubble : MonoBehaviour
 		{
 			_rigidbody.AddForce(delta.normalized * _repelForce / distance, _repelForceMode);
 
-			if (other.IsFree && distance < _mergeDistanceThreshold)
-			{
-				Debug.DrawLine(transform.position, other.transform.position, Color.blue);
-				Debug.DrawRay(transform.position, delta.normalized * distance, Color.white);
-				Debug.DrawRay(transform.position, delta.normalized * Radius, Color.red);
-
-				DOTween.Kill(this);
-				transform.DOScale(Radius + other.Radius, 0.1f)
-				         .SetSpeedBased()
-				         .SetEase(Ease.OutElastic)
-				         .SetId(this);
-
-				//Radius += other.Radius;
-				other.Pop();
-			}
+			if (other.IsFree && distance < _mergeDistanceThreshold) MergeWithBubble(other);
 		}
 		else
 		{
@@ -135,19 +113,23 @@ public class SoapBubble : MonoBehaviour
 		}
 	}
 
+	private void MergeWithBubble(SoapBubble other)
+	{
+		DOTween.Kill(this);
+		transform.DOScale(Radius + other.Radius, 0.1f)
+		         .SetSpeedBased()
+		         .SetEase(Ease.OutElastic)
+		         .SetId(this);
+
+		other.Pop();
+	}
+
 	private void Pop()
 	{
 		var t = transform;
 		var popEffect = Instantiate(_popEffectPrefab, t.position, t.rotation, t.parent);
 		popEffect.transform.localScale = t.localScale;
 		Destroy(gameObject);
-	}
-
-	private float GetNoise(Vector3 position)
-	{
-		var p = (position + _noiseOffset) * _noiseScale;
-		var noise = (Mathf.PerlinNoise(p.x, p.z) - 0.5f) * _noiseAmplitude;
-		return noise;
 	}
 
 	private IEnumerator StartPopRoutine()

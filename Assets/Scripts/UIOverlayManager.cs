@@ -59,12 +59,12 @@ public sealed class UIOverlayManager : MonoBehaviour
 	{
 		// _Very_ rudimentary permission checking.
 		_waitingOverlay.SetActive(true);
-		_status.text = $"Waiting microphone permission.";
+		_status.text = "Waiting microphone permission.";
 
 #if UNITY_ANDROID
 		while (Permission.HasUserAuthorizedPermission(Permission.Microphone) == false)
 		{
-			_status.text = $"Waiting microphone permission.";
+			_status.text = "Waiting microphone permission.";
 			// this call is blocking, apparently, so we can ask for this in a loop 😈
 			Permission.RequestUserPermission(Permission.Microphone);
 			yield return null;
@@ -75,7 +75,7 @@ public sealed class UIOverlayManager : MonoBehaviour
 
 		while (Application.HasUserAuthorization(UserAuthorization.Microphone) == false)
 		{
-			_status.text = $"Microphone permission denied, go to the settings to enable it.";
+			_status.text = "Microphone permission denied, go to the settings to enable it.";
 			yield return null;
 		}
 #endif
@@ -84,7 +84,7 @@ public sealed class UIOverlayManager : MonoBehaviour
 
 		while (_mic.IsListening == false)
 		{
-			_status.text = $"Waiting for microphone to come alive";
+			_status.text = "Waiting for microphone to come alive";
 			yield return null;
 		}
 
@@ -95,7 +95,7 @@ public sealed class UIOverlayManager : MonoBehaviour
 	private IEnumerator ActiveMicState()
 	{
 		_micCTAOverlay.SetActive(true);
-		_status.text = $"";
+		_status.text = "";
 
 		while (_mic.IsListening && ARSession.state.IsUpAndRunning())
 		{
@@ -112,9 +112,9 @@ public static class ARSessionStateExt
 {
 	public static bool IsUpAndRunning(this ARSessionState state)
 	{
-		#if UNITY_EDITOR
+#if UNITY_EDITOR
 		return Input.GetKey(KeyCode.A);
-		#endif
+#endif
 		return state == ARSessionState.Ready || state == ARSessionState.SessionTracking || state == ARSessionState.SessionInitializing;
 	}
 }
