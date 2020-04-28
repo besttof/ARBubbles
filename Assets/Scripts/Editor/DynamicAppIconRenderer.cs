@@ -25,6 +25,8 @@ public sealed class DynamicAppIconRenderer : ScriptableObject
 		public Vector3 Rotation = Vector3.zero;
 	}
 
+	[SerializeField] private bool _generateNewIconsOnBuild;
+	[Space]
 	[SerializeField] private GameObject _prefab;
 	[SerializeField] private CameraSettings _cameraSettings;
 
@@ -109,7 +111,7 @@ public sealed class DynamicAppIconRenderer : ScriptableObject
 		{
 			var settings = Resources.Load<DynamicAppIconRenderer>("Editor/AppIconRenderer");
 
-			settings.RenderIcons();
+			if (settings != null && settings._generateNewIconsOnBuild) settings.RenderIcons();
 		}
 	}
 }
