@@ -22,6 +22,8 @@ public class SoapBubbleSpawner : MonoBehaviour
 	[SerializeField] private float _maxTime = 2f;
 	[SerializeField] private float _intervalTime = 0.2f;
 
+	public int SpawnedBubbles { get; private set; }
+
 	[Serializable]
 	private class Bubble
 	{
@@ -80,6 +82,8 @@ public class SoapBubbleSpawner : MonoBehaviour
 
 			_bubbleInProgress.Release((_bubbleSpawnHolder.TransformDirection(_releaseDir).normalized) * _releaseForce);
 			_bubbleInProgress = null;
+
+			SpawnedBubbles++;
 
 			{
 				var startTime = Time.realtimeSinceStartup;

@@ -13,8 +13,10 @@ public sealed class UIOverlayManager : MonoBehaviour
 	[SerializeField] private GameObject _micCTAOverlay;
 
 	[SerializeField] private TMP_Text _status;
+	[SerializeField] private GameObject _tutorial;
 
 	[SerializeField] private MicrophoneInput _mic;
+	[SerializeField] private SoapBubbleSpawner _bubbleSpawner;
 
 	private void OnEnable()
 	{
@@ -97,6 +99,7 @@ public sealed class UIOverlayManager : MonoBehaviour
 
 		while (_mic.IsListening && ARSession.state.IsUpAndRunning())
 		{
+			_tutorial.SetActive(_bubbleSpawner.SpawnedBubbles <= 0);
 			yield return null;
 		}
 
