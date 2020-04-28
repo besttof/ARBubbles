@@ -1753,7 +1753,7 @@ MonoBehaviour:
   _waitingOverlay: {fileID: 243251838}
   _micCTAOverlay: {fileID: 480349513}
   _status: {fileID: 793131725}
-  _tutorial: {fileID: 1646485536}
+  _tutorial: {fileID: 1566708299}
   _mic: {fileID: 37736095}
   _bubbleSpawner: {fileID: 37736096}
 --- !u!1 &1747486088
